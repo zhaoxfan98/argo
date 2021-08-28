@@ -2,8 +2,6 @@
 // 前序遍历:  根节点 ——> 左子树 ——> 右子树
 //  中序遍历:  左子树 ——> 根节点 ——> 右子树
 //  后序遍历:  左子树 ——> 右子树 ——> 根节点
-
-
 package tree
 
 import (
@@ -15,9 +13,9 @@ type Item interface {
 
 // 节点
 type Node struct {
-	Key int
+	Key   int
 	Value Item
-	left *Node
+	left  *Node
 	right *Node
 }
 
@@ -39,29 +37,29 @@ type ItemBinarySearchTree struct {
 }
 
 // insert element
-func (bst *ItemBinarySearchTree) Insert(key int, value Item)  {
+func (bst *ItemBinarySearchTree) Insert(key int, value Item) {
 	n := &Node{key, value, nil, nil}
 
-	if bst.Root == nil{
+	if bst.Root == nil {
 		bst.Root = n
-	}else {
+	} else {
 		//
 		insertNode(bst.Root, n)
 	}
 }
 
-func insertNode(node, newNode *Node)  {
-	if newNode.Key < node.Key{
+func insertNode(node, newNode *Node) {
+	if newNode.Key < node.Key {
 		// 左边插入
-		if node.left == nil{
+		if node.left == nil {
 			node.left = newNode
-		}else {
+		} else {
 			insertNode(node.left, newNode)
 		}
-	}else {
-		if node.right == nil{
+	} else {
+		if node.right == nil {
 			node.right = newNode
-		}else {
+		} else {
 			insertNode(node.right, newNode)
 		}
 	}
@@ -70,13 +68,13 @@ func insertNode(node, newNode *Node)  {
 // 最小值，根据二叉搜索树的特性，最小值在树的最左边
 func (bst *ItemBinarySearchTree) Min() *Item {
 	n := bst.Root
-	
-	if n == nil{
+
+	if n == nil {
 		return nil
 	}
-	
+
 	for {
-		if n.left == nil{
+		if n.left == nil {
 			return &n.Value
 		}
 		n = n.left
@@ -84,37 +82,37 @@ func (bst *ItemBinarySearchTree) Min() *Item {
 }
 
 // 最大值，一定在树的最右边
-func (bst *ItemBinarySearchTree) Max() *Item  {
+func (bst *ItemBinarySearchTree) Max() *Item {
 	n := bst.Root
 
-	if n == nil{
+	if n == nil {
 		return &n.Value
 	}
 
 	for {
-		if n.right == nil{
+		if n.right == nil {
 			return &n.Value
-		}else {
+		} else {
 			n = n.right
 		}
 	}
 }
 
 // 二叉搜索树，查找元素
-func (bst *ItemBinarySearchTree) Search(key int) bool  {
+func (bst *ItemBinarySearchTree) Search(key int) bool {
 	return search(bst.Root, key)
 }
 
-func search(n *Node, key int) bool  {
-	if n == nil{
+func search(n *Node, key int) bool {
+	if n == nil {
 		return false
 	}
 
-	if key < n.Key{
+	if key < n.Key {
 		return search(n.left, key)
 	}
 
-	if key > n.Key{
+	if key > n.Key {
 		return search(n.right, key)
 	}
 
@@ -122,12 +120,12 @@ func search(n *Node, key int) bool  {
 }
 
 // 中序遍历
-func (bst *ItemBinarySearchTree) InOrderTraverse(f func(item Item))  {
+func (bst *ItemBinarySearchTree) InOrderTraverse(f func(item Item)) {
 	inOrderTraver(bst.Root, f)
 }
 
-func inOrderTraver(n *Node, f func(item Item))  {
-	if n != nil{
+func inOrderTraver(n *Node, f func(item Item)) {
+	if n != nil {
 		inOrderTraver(n.left, f)
 		f(n.Value)
 		inOrderTraver(n.right, f)
@@ -139,8 +137,8 @@ func (bst *ItemBinarySearchTree) PreOrderTraverse(f func(item Item)) {
 	preOrdertraver(bst.Root, f)
 }
 
-func preOrdertraver(n *Node, f func(item Item))  {
-	if n != nil{
+func preOrdertraver(n *Node, f func(item Item)) {
+	if n != nil {
 		f(n.Value)
 		preOrdertraver(n.left, f)
 		preOrdertraver(n.right, f)
@@ -148,36 +146,35 @@ func preOrdertraver(n *Node, f func(item Item))  {
 }
 
 // 后序遍历
-func (bst *ItemBinarySearchTree) PostOrderTraverse(f func(item Item))  {
+func (bst *ItemBinarySearchTree) PostOrderTraverse(f func(item Item)) {
 	postOrderTraver(bst.Root, f)
 }
 
-func postOrderTraver(n *Node, f func(item Item))  {
-	if n != nil{
+func postOrderTraver(n *Node, f func(item Item)) {
+	if n != nil {
 		postOrderTraver(n.left, f)
 		postOrderTraver(n.right, f)
 		f(n.Value)
 	}
 }
 
-func (bst *ItemBinarySearchTree) String()  {
+func (bst *ItemBinarySearchTree) String() {
 	fmt.Println(" ---------------------------------------------------- ")
 	stringify(bst.Root, 0)
 	fmt.Println(" ---------------------------------------------------- ")
 }
 
-func stringify(n *Node, level int)  {
-	if n != nil{
+func stringify(n *Node, level int) {
+	if n != nil {
 		format := ""
-		for i:=0; i<level; i++{
+		for i := 0; i < level; i++ {
 			format += "              "
 		}
 
 		format += "-----["
-		level ++
+		level++
 		stringify(n.left, level)
 		fmt.Printf(format+"%d\n", n.Key)
 		stringify(n.right, level)
 	}
 }
-
